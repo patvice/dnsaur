@@ -78,5 +78,6 @@ DEPENDENCIES
   codeclimate-test-reporter
   coveralls
   guard-rspec
+  pry
   rspec (~> 3.1.0)
   terminal-notifier-guard

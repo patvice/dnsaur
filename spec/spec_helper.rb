@@ -1,7 +1,7 @@
 require 'bundler/setup'
 Bundler.setup
 
-require 'dns-checker'
+require 'dnsaurs'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
