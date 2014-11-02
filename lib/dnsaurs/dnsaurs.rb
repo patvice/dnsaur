@@ -1,16 +1,15 @@
-require "./version.rb"
-require "./sift_3_distance.rb"
-require "./email_manipulation.rb"
-require "resolv"
+require "dnsaurs/version"
+require "dnsaurs/sift_3_distance"
+require "dnsaurs/email_manipulation"
 
 class Dnsaurs
   include EmailManipulation
 
-  attr_accessor :defualt_domain, :top_level_defualt, :orignal_email
+  attr_accessor :defualt_domain, :top_level_defualt, :original_email
 
   def initialize email, defualt_domain=nil, top_level_defualt=nil
     if email
-      @orignal_email = email
+      @original_email = email
     else
       raise ArgumentError, "expected a value for email"
     end
@@ -18,7 +17,6 @@ class Dnsaurs
     @defaul_domain = defualt_domain
     @top_level_defualt = top_level_defualt
 
-    @suggested_email = Dnsaurs.suggest @orignal_email, @defualt_domain, @top_level_defualt
   end
 
   def self.open(*args)
@@ -30,11 +28,11 @@ class Dnsaurs
   end
 
   def valid_original_dns?
-    Dnsaurs.valid_dns? @orignal_email
+    Dnsaurs.valid_dns? @original_email
   end
 
   def valid_suggested_dns?
-    Dnsaurs.valid_dns? @suggested_email
+    Dnsaurs.valid_dns? Dnsaurs.suggest(@original_email, @defualt_domain, @top_level_defualt)[:full]
   end
 
   def self.valid_dns? email
@@ -44,10 +42,10 @@ class Dnsaurs
   end
 
   def self.valid_email? email
-    !!(split_email @orignal_email)
+    !!(Dnsaurs.split_email email)
   end
 
   def valid_email?
-    Dnsaurs.valid_email? @orignal_email
+    !!(Dnsaurs.valid_email? @original_email)
   end
 end
