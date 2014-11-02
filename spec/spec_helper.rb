@@ -1,7 +1,7 @@
 require 'bundler/setup'
 Bundler.setup
 
-require 'dnsaurs'
+require 'dnsaur'
 
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
 

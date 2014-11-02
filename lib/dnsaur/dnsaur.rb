@@ -1,8 +1,8 @@
-require "dnsaurs/version"
-require "dnsaurs/sift_3_distance"
-require "dnsaurs/email_manipulation"
+require "dnsaur/version"
+require "dnsaur/sift_3_distance"
+require "dnsaur/email_manipulation"
 
-class Dnsaurs
+class Dnsaur
   include EmailManipulation
 
   attr_accessor :defualt_domain, :top_level_defualt, :original_email
@@ -20,32 +20,32 @@ class Dnsaurs
   end
 
   def self.open(*args)
-    dnsaurs = new(*args)
-    return dnsaurs unless block_given?
+    dnsaur = new(*args)
+    return dnsaur unless block_given?
     begin
-      yield dnsaurs
+      yield dnsaur
     end
   end
 
   def valid_original_dns?
-    Dnsaurs.valid_dns? @original_email
+    Dnsaur.valid_dns? @original_email
   end
 
   def valid_suggested_dns?
-    Dnsaurs.valid_dns? Dnsaurs.suggest(@original_email, @defualt_domain, @top_level_defualt)[:full]
+    Dnsaur.valid_dns? Dnsaur.suggest(@original_email, @defualt_domain, @top_level_defualt)[:full]
   end
 
   def self.valid_dns? email
-    email_parts = Dnsaurs.split_email email
+    email_parts = Dnsaur.split_email email
     mx = Resolv::DNS.open.getresources(email_parts[:domain], Resolv::DNS::Resource::IN::MX)
     mx.size > 0 ? true : false
   end
 
   def self.valid_email? email
-    !!(Dnsaurs.split_email email)
+    !!(Dnsaur.split_email email)
   end
 
   def valid_email?
-    !!(Dnsaurs.valid_email? @original_email)
+    !!(Dnsaur.valid_email? @original_email)
   end
 end
