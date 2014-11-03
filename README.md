@@ -27,7 +27,7 @@ custom domains and/or custom top level domains are optional.
 
 Dnsaur supplies three different uses,
 
-1. Email Suggestion/Correction
+### Email Suggestion/Correction
 
 In the suggest method, you can pass an email and it will return a suggested email in a hash
 example:
@@ -45,10 +45,10 @@ Dnsaur.suggest email
 ```
 If there is no match, or it is an exact match to a defualt domain, it will return false.
 
-2. Reverse DNS lookup Helpers
-
+### Reverse DNS lookup Helpers
 The DNS lookup for this gem uses `Resolv` from the ruby stdlib, but I supplied class/instanced helper methods
 for ease of use. If you have an instances of the class, it
+
 ```ruby
 #Class Methods
 email = "test@example.com"
@@ -65,7 +65,7 @@ dns.valid_suggested_email?
 => true || false
 ```
 
-3. Split and Vaild Emails
+### Split and Vaild Emails
 
 The split_email method is used to split the email into three parts
 ```ruby
