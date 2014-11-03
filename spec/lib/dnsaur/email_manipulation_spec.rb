@@ -29,23 +29,6 @@ describe EmailManipulation do
       email = "test@example.com"
       expect(@email_manipulation.suggest email).to be false
     end
-
-    context "with a domain list & a top level domain list" do
-      it "returns a corrected top level domain out of the list" do
-        email = "test@fake.suu"
-        suggest_return = {address: "test", domain: "fake.su", full: "test@fake.su"}
-        expect(@email_manipulation.suggest email, domains, top_level_domains).to eq(suggest_return)
-      end
-      it "returns a corrected domain out of the list" do
-        email = "test@unfeatred.com"
-        suggest_return = {address: "test", domain: "unfeatured.com", full: "test@unfeatured.com"}
-        expect(@email_manipulation.suggest email, domains, top_level_domains).to eq(suggest_return)
-      end
-      it "returns false when the domain is the same a domain in the list of domains" do
-        email = "test@scaremonger.co"
-        expect(@email_manipulation.suggest email, domains, top_level_domains).to be false
-      end
-    end
   end
 
   describe "#split_email" do

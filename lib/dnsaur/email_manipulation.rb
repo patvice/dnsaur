@@ -3,18 +3,38 @@ module EmailManipulation
 
   DOMAIN_THRESHOLD = 4
   TOP_LEVEL_THRESHOLD = 3
+  DEFAULT_ERROR = "default domains list can't be nil or empty"
+  TOP_LEVEL_ERROR = "default top level domains can't be nil or empty"
 
-  DEFAULT_DOMAINS = ["yahoo.com", "google.com", "hotmail.com", "gmail.com", "me.com", "aol.com", "mac.com",
-                     "live.com", "comcast.net", "googlemail.com", "msn.com", "hotmail.co.uk", "yahoo.co.uk",
-                     "facebook.com", "verizon.net", "sbcglobal.net", "att.net", "gmx.com", "mail.com",
-                     "outlook.com", "icloud.com"]
+  @@default_domains = ["yahoo.com", "google.com", "hotmail.com", "gmail.com", "me.com", "aol.com", "mac.com",
+                       "live.com", "comcast.net", "googlemail.com", "msn.com", "hotmail.co.uk", "yahoo.co.uk",
+                       "facebook.com", "verizon.net", "sbcglobal.net", "att.net", "gmx.com", "mail.com",
+                       "outlook.com", "icloud.com"]
 
-  DEFAULT_TOP_LEVEL_DOMAINS = ["co.jp", "co.uk", "com", "net", "org", "info", "edu", "gov", "mil", "ca"]
+  @@default_top_level_domains = ["co.jp", "co.uk", "com", "net", "org", "info", "edu", "gov", "mil", "ca"]
 
-  def suggest email, domains=nil, top_level_domains=nil
+  def default_domains
+    @@default_domains
+  end
 
-    domains ||= DEFAULT_DOMAINS
-    top_level_domains ||= DEFAULT_TOP_LEVEL_DOMAINS
+  def default_domains= domains
+    raise ArgumentError, DEFAULT_ERROR if domains.nil? || domains.empty?
+    self.default_domains = domains
+  end
+
+  def default_top_level_domains
+    @@default_top_level_domains
+  end
+
+  def default_top_level_domains= top_level_domains
+    raise ArgumentError, TOP_LEVEL_ERROR if top_level_domains.nil? || top_level_domains.empty?
+    self.default_top_level_domains = top_level_domains
+  end
+
+  def suggest email
+
+    domains = @@default_domains
+    top_level_domains = @@default_top_level_domains
 
     email = email.downcase
     email_parts = self.split_email(email)

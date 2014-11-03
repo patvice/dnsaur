@@ -5,18 +5,16 @@ require "dnsaur/email_manipulation"
 class Dnsaur
   include EmailManipulation
 
-  attr_accessor :defualt_domain, :top_level_defualt, :original_email
+  attr_reader :original_email
 
-  def initialize email, defualt_domain=nil, top_level_defualt=nil
-    if email
+  def initialize email
+    if Dnsaur.valid_email? email
       @original_email = email
     else
       raise ArgumentError, "expected a value for email"
     end
 
-    @defaul_domain = defualt_domain
-    @top_level_defualt = top_level_defualt
-
+    @suggested_email = suggest @original_email
   end
 
   def self.open(*args)
@@ -32,7 +30,7 @@ class Dnsaur
   end
 
   def valid_suggested_dns?
-    Dnsaur.valid_dns? Dnsaur.suggest(@original_email, @defualt_domain, @top_level_defualt)[:full]
+    Dnsaur.valid_dns? @suggested_email[:full]
   end
 
   def self.valid_dns? email
@@ -43,9 +41,5 @@ class Dnsaur
 
   def self.valid_email? email
     !!(Dnsaur.split_email email)
-  end
-
-  def valid_email?
-    !!(Dnsaur.valid_email? @original_email)
   end
 end
