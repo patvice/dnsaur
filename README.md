@@ -1,13 +1,14 @@
 #Dnsaur
+[![Circle CI](https://circleci.com/gh/patvice/dnsaur.png?style=badge)](https://circleci.com/gh/patvice/dnsaur)
 
-Dnsaur is a simple DNS checker / email corrector for ruby. When a user misspells a domain, it suggests
-the right spelling, as well as provide simple reverse DNS helper methods to help verifiy these emails.
+
+Dnsaur is a simple DNS checker / email corrector for ruby. This gem does three things; when a user misspells a domain, it suggests the right spelling, it provide simple reverse DNS helper methods to help verifiy these emails, and splits emails into three parts(top level domain, domain, address).
 
 The email suggestion part of the gem is based off a small javascript library called
 [mailcheck.js](https://github.com/mailcheck/mailcheck). If you are looking for a more front end
 solution for correcting email input, I suggest checking this out.
 
-## How it works
+## How the suggest works
 
 When your user types in "user@hotnail.con", Dnsaur will suggest "user@hotmail.com". It can also
 suggest top level domains, where a user types "user@hotmail.cmo" and would suggest ".com"
@@ -16,7 +17,7 @@ It does this by comparing a list of popular default domains and defualt top leve
 the gem.
 
 ## Usage
-Dnsaur can be used ether as an instances or as class methods. When created an instance you need to
+Dnsaur can be used ether as an instance or as class methods. When creating an instance you need to
 supply it with email,
 ```ruby
 email = "test@example.com"
@@ -24,8 +25,7 @@ dns = Dnsaur.new email
 => #<Dnsaur:0x007fb8ea17d590 @original_email="test@example.com", ...
 ```
 custom domains and/or custom top level domains are optional.
-
-Dnsaur supplies three different uses,
+For more information on custom domain, see the `Domains`section below.
 
 ### Email Suggestion/Correction
 
@@ -65,7 +65,7 @@ dns.valid_suggested_email?
 => true || false
 ```
 
-### Split and Vaild Emails
+### Spliting and Vaildating Emails
 
 The split_email method is used to split the email into three parts
 ```ruby
@@ -105,8 +105,7 @@ Dnsaur.default_domains.push('customdomain.com', 'anotherdomain.net')
 Dnsaur.default_top_level_domains.push('com.au', 'ru')
 ```
 
-`default_domains` and `default_top_level_domains` are class members, so once change all the instances of this class will have
-your custom list of domains
+`default_domains` and `default_top_level_domains` are class members, with one change, all other instances of your class will have your custom list of domains
 
 ## Installation
 

@@ -5,15 +5,15 @@ require "dnsaur/email_manipulation"
 class Dnsaur
   include EmailManipulation
 
+  ARG_ERROR = "An email can not be empty or invalid"
   attr_reader :original_email
 
   def initialize email
     if Dnsaur.valid_email? email
       @original_email = email
     else
-      raise ArgumentError, "An email can not be empty or invalid"
+      raise ArgumentError, ARG_ERROR
     end
-
     @suggested_email = suggest @original_email
   end
 
@@ -25,8 +25,19 @@ class Dnsaur
     end
   end
 
+  def original_email
+    @original_email
+  end
+
+  def original_email= email
+    raise ArgumentError, ARG_ERROR unless Dnsaur.valid_email? email
+    @original_email = email
+    @suggested_email = suggest email
+  end
+
   def suggested_email
-    @suggested_email[:full]
+    return false unless @suggested_email
+    @suggested_email[:full] if @suggested_email
   end
 
   def valid_original_dns?
@@ -34,6 +45,7 @@ class Dnsaur
   end
 
   def valid_suggested_dns?
+    return false unless @suggested_email
     Dnsaur.valid_dns? @suggested_email[:full]
   end
 

@@ -25,7 +25,8 @@ describe EmailManipulation do
       expect(@email_manipulation.default_domains).to be_truthy
     end
   end
-  describe "#default_domains" do
+
+  describe "#default_domains=" do
     it "assigns a new set of domains" do
       domain_list = ['example.com', 'fake.org']
       @email_manipulation.default_domains= domain_list
@@ -40,12 +41,14 @@ describe EmailManipulation do
       expect{@email_manipulation.default_domains= domain_list}.to raise_error
     end
   end
+
   describe "#default_top_level_domains" do
     it "returns a list of top_level_domains" do
       expect(@email_manipulation.default_top_level_domains).to be_truthy
     end
   end
-  describe "#default_top_level_domains" do
+
+  describe "#default_top_level_domains=" do
     it "assigns a new set of domains" do
       tldomain_list = ['example.com', 'fake.org']
       @email_manipulation.default_top_level_domains= tldomain_list

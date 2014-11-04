@@ -13,7 +13,9 @@ describe Dnsaur do
       expect(dns.suggested_email).to be_truthy
     end
   end
+
   context "class methods" do
+
     describe "::valid_dns?" do
       it "returns true when there reverse DNS lookup returns MX" do
         email = "test@example.com"
@@ -44,9 +46,37 @@ describe Dnsaur do
       @dnsaur = Dnsaur.new "test@hotnail.com"
     end
 
+    describe "#original_email" do
+     it "returns an email given when a new instance is created" do
+        expect(@dnsaur.original_email).to eq("test@hotnail.com")
+      end
+    end
+
+    describe "#original_email=" do
+      it "sets a new email for that object" do
+        email = "test@example.com"
+        @dnsaur.original_email = email
+        expect(@dnsaur.original_email).to eq(email)
+      end
+      it "sets a new suggestion when an email is changed" do
+        email = "test@example.com"
+        @dnsaur.original_email = email
+        expect(@dnsaur.suggested_email).to be_falsey
+      end
+      it "raises an error when trying to change to an invalid email" do
+        email = "test@"
+        expect{@dnsaur.original_email= email}.to raise_error(ArgumentError)
+      end
+    end
+
     describe "#suggested_email" do
       it "returns a suggested email" do
         expect(@dnsaur.suggested_email).to eq('test@hotmail.com')
+      end
+      it "it returns false if there is not suggest" do
+        email = "test@example.com"
+        @dnsaur.original_email = email
+        expect(@dnsaur.suggested_email).to be_falsey
       end
     end
 
@@ -60,6 +90,7 @@ describe Dnsaur do
         expect(@dnsaur.valid_original_dns?).to be false
       end
     end
+
     describe "#valid_suggested_dns?" do
       it "returns true when there reverse DNS lookup returns MX" do
         Resolv::DNS.stub_chain(:open, :getresources).and_return ['true', 'true']
