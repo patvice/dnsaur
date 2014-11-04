@@ -11,7 +11,7 @@ class Dnsaur
     if Dnsaur.valid_email? email
       @original_email = email
     else
-      raise ArgumentError, "expected a value for email"
+      raise ArgumentError, "An email can not be empty or invalid"
     end
 
     @suggested_email = suggest @original_email
@@ -23,6 +23,10 @@ class Dnsaur
     begin
       yield dnsaur
     end
+  end
+
+  def suggested_email
+    @suggested_email[:full]
   end
 
   def valid_original_dns?

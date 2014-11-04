@@ -2,8 +2,16 @@ require 'spec_helper'
 
 describe Dnsaur do
 
-  describe "initialize" do
-    #Need to write test for initialization
+  describe "::initialize" do
+    it "when the email is invalid it raises an error" do
+      email = ""
+      expect{ Dnsaur.new email }.to raise_error(ArgumentError)
+    end
+    it "suggests an email when it being initialized" do
+      email = "test@hotnail.con"
+      dns = Dnsaur.new email
+      expect(dns.suggested_email).to be_truthy
+    end
   end
   context "class methods" do
     describe "::valid_dns?" do
@@ -34,6 +42,12 @@ describe Dnsaur do
   context 'instance methods' do
     before do
       @dnsaur = Dnsaur.new "test@hotnail.com"
+    end
+
+    describe "#suggested_email" do
+      it "returns a suggested email" do
+        expect(@dnsaur.suggested_email).to eq('test@hotmail.com')
+      end
     end
 
     describe "#valid_original_dns?" do

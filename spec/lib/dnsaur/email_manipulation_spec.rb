@@ -1,10 +1,12 @@
 require 'spec_helper'
 
 describe EmailManipulation do
-  let(:domains) {['scaremonger.co', 'cuspidation.ca', 'telecommunication.org', 'turtlet.com', 'nappiest.uk',
-                  'nonstaple.net', 'unfeatured.com', 'cysticerci.org', 'plugging.com', 'example.com'] }
+  let(:domains) {["yahoo.com", "google.com", "hotmail.com", "gmail.com", "me.com", "aol.com", "mac.com",
+                  "live.com", "comcast.net", "googlemail.com", "msn.com", "hotmail.co.uk", "yahoo.co.uk",
+                  "facebook.com", "verizon.net", "sbcglobal.net", "att.net", "gmx.com", "mail.com",
+                  "outlook.com", "icloud.com"] }
 
-  let(:top_level_domains){ ['aq', 'at', 'bz', 'co', 'eu', 'hk', 'nz', 'su', 'us', 'zw'] }
+  let(:top_level_domains){ ["co.jp", "co.uk", "com", "net", "org", "info", "edu", "gov", "mil", "ca"] }
 
   class DummyEmailManipulation
   end
@@ -12,6 +14,51 @@ describe EmailManipulation do
   before(:each) do
     @email_manipulation = DummyEmailManipulation.new
     @email_manipulation.extend(EmailManipulation)
+  end
+  after(:each) do
+    @email_manipulation.default_domains = domains
+    @email_manipulation.default_top_level_domains = top_level_domains
+  end
+
+  describe "#default_domains" do
+    it "returns a list of domains" do
+      expect(@email_manipulation.default_domains).to be_truthy
+    end
+  end
+  describe "#default_domains" do
+    it "assigns a new set of domains" do
+      domain_list = ['example.com', 'fake.org']
+      @email_manipulation.default_domains= domain_list
+      expect(@email_manipulation.default_domains).to eq(domain_list)
+    end
+    it "raise an error when passed an empty array" do
+      domain_list = []
+      expect{@email_manipulation.default_domains= domain_list}.to raise_error
+    end
+    it "raises an error when passed nil" do
+      domain_list = nil
+      expect{@email_manipulation.default_domains= domain_list}.to raise_error
+    end
+  end
+  describe "#default_top_level_domains" do
+    it "returns a list of top_level_domains" do
+      expect(@email_manipulation.default_top_level_domains).to be_truthy
+    end
+  end
+  describe "#default_top_level_domains" do
+    it "assigns a new set of domains" do
+      tldomain_list = ['example.com', 'fake.org']
+      @email_manipulation.default_top_level_domains= tldomain_list
+      expect(@email_manipulation.default_top_level_domains).to eq(tldomain_list)
+    end
+    it "raise an error when passed an empty array" do
+      tldomain_list = []
+      expect{@email_manipulation.default_top_level_domains= tldomain_list}.to raise_error
+    end
+    it "raises an error when passed nil" do
+      tldomain_list = nil
+      expect{@email_manipulation.default_top_level_domains= tldomain_list}.to raise_error
+    end
   end
 
   describe "#suggest" do
@@ -58,16 +105,16 @@ describe EmailManipulation do
       expect(@email_manipulation.find_closest_domain nil, nil, 4).to be false
     end
     it "returns false when there is no match" do
-      domain = "fake.com"
+      domain = "example.com"
       expect(@email_manipulation.find_closest_domain domain, domains, 4).to be false
     end
     it "returns nil when there is an exact match" do
-      domain = "example.com"
+      domain = "hotmail.com"
       expect(@email_manipulation.find_closest_domain domain, domains, 4).to be nil
     end
     it "passes a suggestion when there is a differece less then the threshold" do
-      domain = "example.c"
-      expect(@email_manipulation.find_closest_domain domain, domains, 4).to eq('example.com')
+      domain = "hotmail.c"
+      expect(@email_manipulation.find_closest_domain domain, domains, 4).to eq('hotmail.com')
     end
   end
 end
