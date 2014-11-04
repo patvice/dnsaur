@@ -1,5 +1,5 @@
 #Dnsaur
-[![Circle CI](https://circleci.com/gh/patvice/dnsaur.png?style=badge)](https://circleci.com/gh/patvice/dnsaur)
+[![Code Climate](https://codeclimate.com/github/patvice/dnsaur/badges/gpa.svg)](https://codeclimate.com/github/patvice/dnsaur) [![Coverage Status](https://coveralls.io/repos/patvice/dnsaur/badge.png?branch=master)](https://coveralls.io/r/patvice/dnsaur?branch=master) [![Circle CI](https://circleci.com/gh/patvice/dnsaur.png?style=badge)](https://circleci.com/gh/patvice/dnsaur)
 
 
 Dnsaur is a simple DNS checker / email corrector for ruby. This gem does three things; when a user misspells a domain, it suggests the right spelling, it provide simple reverse DNS helper methods to help verifiy these emails, and splits emails into three parts(top level domain, domain, address).
