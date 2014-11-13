@@ -81,6 +81,51 @@ describe EmailManipulation do
     end
   end
 
+  describe "#domain_suggestion" do
+    it "returns a corrected domain" do
+      domain = "hotnail.com"
+      expect(@email_manipulation.domain_suggestion(domain)).to eq('hotmail.com')
+    end
+    it "returns false if domain is valid" do
+      domain = "hotmail.com"
+      expect(@email_manipulation.domain_suggestion(domain)).to eq(false)
+    end
+    it "returns false if there are no suggestions" do
+      allow(@email_manipulation).to receive(:find_closest_domain).and_return false
+      domain = "notacommondomain.com"
+      expect(@email_manipulation.domain_suggestion(domain)).to eq(false)
+    end
+  end
+
+  describe "#tld_suggestion" do
+    it "returns a domain with corrected tld" do
+      domain = "example.con"
+      tld = "con"
+      expect(@email_manipulation.tld_suggestion(domain, tld)).to eq('example.com')
+    end
+    it "returns false if tld is valid" do
+      domain = "example.com"
+      tld = "com"
+      expect(@email_manipulation.tld_suggestion(domain, tld)).to eq(false)
+    end
+    it "returns false if suggestion is not found" do
+      allow(@email_manipulation).to receive(:find_closest_domain).and_return false
+      domain = "example.faketld"
+      tld = "faketld"
+      expect(@email_manipulation.tld_suggestion(domain, tld)).to eq(false)
+    end
+  end
+
+  describe "#format_suggested_email" do
+    it "returns a hash with address" do
+      address = "test"
+      domain = "hotmail.com"
+      suggest_return = {address: address, domain: domain, full: "#{address}@#{domain}"}
+      expect(@email_manipulation.format_suggested_email(address, domain)).to eq(suggest_return)
+    end
+
+  end
+
   describe "#split_email" do
     it "splits an email into three parts" do
       email = 'test@example.com'

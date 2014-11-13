@@ -36,23 +36,32 @@ module EmailManipulation
 
   def suggest email
     email_parts = self.split_email(email)
-    closest_domain = self.find_closest_domain(email_parts[:domain], @@default_domains, DOMAIN_THRESHOLD)
 
-    if closest_domain
-      if closest_domain != email_parts[:domain]
-        return { address: email_parts[:address], domain: closest_domain, full: email_parts[:address] + "@" + closest_domain }
-      end
+    suggestion = domain_suggestion(email_parts[:domain])
+    suggestion ||= tld_suggestion(email_parts[:domain], email_parts[:top_level_domain])
+    suggestion ? format_suggested_email(email_parts[:address], suggestion) : false
+  end
+
+  def domain_suggestion domain
+    closest_domain = self.find_closest_domain(domain, @@default_domains, DOMAIN_THRESHOLD)
+    if closest_domain && closest_domain != domain
+      return closest_domain
     else
-      closest_top_level_domain = self.find_closest_domain(email_parts[:top_level_domain], @@default_top_level_domains, TOP_LEVEL_THRESHOLD)
-
-      if closest_top_level_domain && closest_top_level_domain != email_parts[:top_level_domain]
-        closest_domain = email_parts[:domain].split('.', 2).first + '.' + closest_top_level_domain
-
-        return { address: email_parts[:address], domain: closest_domain, full: email_parts[:address] + "@" + closest_domain }
-      end
+      return false
     end
+  end
 
-    return false
+  def tld_suggestion domain, tld
+    closest_top_level_domain = self.find_closest_domain(tld, @@default_top_level_domains, TOP_LEVEL_THRESHOLD)
+    if closest_top_level_domain && closest_top_level_domain != tld
+      return closest_domain = domain.split('.', 2).first + '.' + closest_top_level_domain
+    else
+      false
+    end
+  end
+
+  def format_suggested_email address, domain
+    return { address: address, domain: domain, full: "#{address}@#{domain}"}
   end
 
   def split_email email
