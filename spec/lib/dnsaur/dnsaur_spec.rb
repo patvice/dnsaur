@@ -19,12 +19,12 @@ describe Dnsaur do
     describe "::valid_dns?" do
       it "returns true when there reverse DNS lookup returns MX" do
         email = "test@example.com"
-        Resolv::DNS.stub_chain(:open, :getresources).and_return ['true', 'true']
+        allow(Resolv::DNS).to receive_message_chain(:open, :getresources).and_return ['true', 'true']
         expect(Dnsaur.valid_dns? email).to be true
       end
       it "returns false when there is no MX for that domain" do
         email = "test@example.com"
-        Resolv::DNS.stub_chain(:open, :getresources).and_return []
+        allow(Resolv::DNS).to receive_message_chain(:open, :getresources).and_return []
         expect(Dnsaur.valid_dns? email).to be false
       end
     end
@@ -82,22 +82,22 @@ describe Dnsaur do
 
     describe "#valid_original_dns?" do
       it "returns true when reverse DNS lookup returns MX" do
-        Resolv::DNS.stub_chain(:open, :getresources).and_return ['true', 'true']
+        allow(Resolv::DNS).to receive_message_chain(:open, :getresources).and_return ['true', 'true']
         expect(@dnsaur.valid_original_dns?).to be true
       end
       it "returns fail when there is no MX for that domain" do
-        Resolv::DNS.stub_chain(:open, :getresources).and_return []
+        allow(Resolv::DNS).to receive_message_chain(:open, :getresources).and_return []
         expect(@dnsaur.valid_original_dns?).to be false
       end
     end
 
     describe "#valid_suggested_dns?" do
       it "returns true when there reverse DNS lookup returns MX" do
-        Resolv::DNS.stub_chain(:open, :getresources).and_return ['true', 'true']
+        allow(Resolv::DNS).to receive_message_chain(:open, :getresources).and_return ['true', 'true']
         expect(@dnsaur.valid_suggested_dns?).to be true
       end
       it "returns false when there is no MX for that domain" do
-        Resolv::DNS.stub_chain(:open, :getresources).and_return []
+        allow(Resolv::DNS).to receive_message_chain(:open, :getresources).and_return []
         expect(@dnsaur.valid_suggested_dns?).to be false
       end
     end
