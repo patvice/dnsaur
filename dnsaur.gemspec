@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
    provide simple reverse DNS helper methods to help verifiy these emails, and
    splits emails into three parts(top level domain, domain, address).
   EOF
-  s.homepage      = 'https://github.com/pavice/dnsaur'
+  s.homepage      = 'https://github.com/patvice/dnsaur'
   s.license       = 'MIT'
 
   s.files         = `git ls-files`.split("\n")
